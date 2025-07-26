@@ -1,8 +1,7 @@
 import sys
 
 from PySide6.QtCore import Qt
-import requests
-import json
+from .json_parser import get_country_names
 from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
@@ -26,8 +25,6 @@ class MainWindow(QMainWindow):
         self.myLabel = QLabel()
         #Connect signal and slot for handling combo box drop down selection
         self.myComboBox.currentTextChanged.connect(self.handle_country_text_changed)
-        #Get the countries and populate the combo box drop down
-        self.get_countries()
         #Add widgets to layout
         layout.addWidget(self.myComboBox)
         layout.addWidget(self.myLabel)
@@ -36,24 +33,21 @@ class MainWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(layout)
         self.setCentralWidget(widget)
+
+        #Get the countries and populate the combo box drop down
+        self.get_countries()
     
     def get_countries(self):
-        #Make the GET request
-        response = requests.get('https://www.apicountries.com/countries')
-
-        #Get the JSON data
-        countries_data = response.json()
-
-        #Strip names into a list
-        country_names = []
-        for country in countries_data:
-            name = country.get("name")
-            country_names.append(name.strip())
-
-        #Populate the combo box with the country names list
-        self.myComboBox.clear()
-        self.myComboBox.addItems(country_names)
-
+        try:
+            country_names = get_country_names()
+            self.myComboBox.clear()
+            self.myComboBox.addItems(country_names)
+            
+        except Exception as e:
+            print(f"Error loading countries: {e}")
+            self.myComboBox.clear()
+            self.myComboBox.addItems(["Error loading countries"])
+            self.myLabel.setText("Failed to load countries. Check your internet connection.")
 
     def handle_country_text_changed(self, country):
         self.myLabel.setText(country)
