@@ -25,11 +25,12 @@ conda create -n country_picker python=3.9
 
 conda activate country_picker
 
-Alternatively a requirements .txt is provided for installation through pip.
-
 **Install dependencies:**
 
 conda install pyside6 requests
+
+
+Alternatively a requirements .txt is provided for installation through pip.
 
 ## Usage
 
