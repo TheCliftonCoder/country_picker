@@ -50,4 +50,4 @@ class MainWindow(QMainWindow):
             self.myLabel.setText("Failed to load countries. Check your internet connection.")
 
     def handle_country_text_changed(self, country):
-        self.myLabel.setText(country)
+        self.myLabel.setText(f"Selected: {country}")
