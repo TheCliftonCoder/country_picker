@@ -12,6 +12,9 @@ A GUI application for selecting countries with data fetched from an external API
 
 - Python 3.8 or higher
 - Internet connection (for fetching country data)
+- PySide6 6.0.0 or higher
+- requests 2.25.0 or higher
+- pytest 7.0.0 or higher
 
 ## Installation & Setup
 
