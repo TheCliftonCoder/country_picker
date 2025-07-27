@@ -22,6 +22,7 @@ git clone https://github.com/TheCliftonCoder/country_picker.git
 **Create conda environment:**
 
 conda create -n country_picker python=3.9
+
 conda activate country_picker
 
 Alternatively a requirements .txt is provided for installation through pip.
