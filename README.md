@@ -15,18 +15,18 @@ A GUI application for selecting countries with data fetched from an external API
 
 ## Installation & Setup
 
-1. **Clone or download the project:**
+**Clone or download the project:**
 
 git clone https://github.com/TheCliftonCoder/country_picker.git
 
-2. **Create conda environment:**
+**Create conda environment:**
 
 conda create -n country_picker python=3.9
 conda activate country_picker
 
 Alternatively a requirements .txt is provided for installation through pip.
 
-3. **Install dependencies:**
+**Install dependencies:**
 
 conda install pyside6 requests
 
