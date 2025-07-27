@@ -5,7 +5,9 @@ import pytest
 from country_picker.json_parser import parse_country_names, get_country_names
 
 def test_parse_country_names_basic():
-    #Test basic country name parsing
+    '''
+    Test basic country name parsing
+    '''
     sample_data = [
         {"name": "United States", "capital": "Washington"},
         {"name": "Canada", "capital": "Ottawa"},
@@ -17,7 +19,9 @@ def test_parse_country_names_basic():
     assert result == expected
 
 def test_parse_country_names_with_whitespace():
-    #Test that whitespace is stripped
+    '''
+    Test that whitespace is stripped
+    '''
     sample_data = [
         {"name": "  United States  "},
         {"name": "\tCanada\n"}
@@ -28,7 +32,9 @@ def test_parse_country_names_with_whitespace():
     assert result == expected
 
 def test_parse_country_names_missing_data():
-    #Test handling of missing or invalid names
+    '''
+    Test handling of missing or invalid names
+    '''
     sample_data = [
         {"name": "Valid Country"},
         {"name": ""},  #Empty string

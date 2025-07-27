@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QApplication
 from .gui import MainWindow
 import sys
 
-def main():
+def main() -> None:
     '''Entry point for the application'''
     app = QApplication(sys.argv)
     app.setApplicationName("Country Picker")

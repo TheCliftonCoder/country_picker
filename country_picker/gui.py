@@ -1,4 +1,13 @@
+
+"""
+GUI module for the Country Picker application.
+
+This module contains the main window and background thread classes for
+displaying and managing country selection interface.
+"""
+
 import sys
+from typing import List, Optional
 
 from PySide6.QtCore import Qt, QThread, Signal
 from .json_parser import get_country_names
@@ -11,13 +20,14 @@ from PySide6.QtWidgets import (
 )
 
 class CountryLoaderThread(QThread):
-    """Background thread for loading countries"""
+    """Background thread for loading country data from API"""
     
     #Signals to be picked up by the main thread
     countries_loaded = Signal(list)  #Emits list of country names
     error_occurred = Signal(str)     #Emits error message
     
-    def run(self):
+    def run(self)-> None:
+        '''Execute the thread's main work - fetch countries from API.'''
         try:
             country_names = get_country_names()
             self.countries_loaded.emit(country_names)
@@ -25,12 +35,26 @@ class CountryLoaderThread(QThread):
             self.error_occurred.emit(str(e))
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    '''
+    Main application window for the Country Picker.
+    Provides a GUI interface with a dropdown for selecting countries and
+    labels for displaying status and selection information. Handles country
+    data loading in a background thread to keep the UI responsive.
+    '''
+    def __init__(self) -> None:
+        '''
+        Initialize the main window.
+        '''
         super().__init__()
         self.country_thread = None
         self.setup_ui()
 
-    def setup_ui(self):
+    def setup_ui(self) -> None:
+        '''
+        Sets up the main window layout with a country selection dropdown,
+        status labels, and connects signal handlers.
+        '''
+
         self.setWindowTitle("Country Picker")
 
         layout = QVBoxLayout()
@@ -54,7 +78,14 @@ class MainWindow(QMainWindow):
         #Get the countries and populate the combo box drop down
         self.get_countries()
     
-    def get_countries(self):
+    def get_countries(self) -> None:
+        ''' 
+        Initiate country data loading in a background thread.
+        
+        Sets up loading UI state and starts a background thread to fetch
+        country data from the API. Updates the UI to show loading status
+        and connects thread signals to appropriate handlers.
+        '''
         #Display loading message
         self.myLoadingLabel.setText("Countries Loading")
 
@@ -73,15 +104,37 @@ class MainWindow(QMainWindow):
         #Start the thread
         self.country_thread.start()
 
-    def handle_countries_loaded(self, country_names):
+    def handle_countries_loaded(self, country_names: List[str]) -> None:
+        '''
+        Handle successful country data loading.
+        
+        Called when the background thread successfully loads country data.
+        Updates the UI to display the loaded countries in the dropdown
+        and shows a success message.
+        '''
         self.myComboBox.clear()
         self.myComboBox.addItems(country_names)
-        self.myLoadingLabel.setText(f"Loaded {len(country_names)} countries. Select one:")
+        self.myLoadingLabel.setText(f"Loaded {len(country_names)} countries.")
 
-    def handle_country_download_error(self, error_message):
+    def handle_country_download_error(self, error_message: str) -> None:
+        '''
+        Handle country data loading errors.
+        
+        Called when the background thread encounters an error while loading
+        country data. Updates the UI to show an error state and display
+        the error message to the user.
+        '''
         self.myComboBox.clear()
         self.myComboBox.addItems(["Error loading countries"])
         self.myLoadingLabel.setText(f"Error: {error_message}")
 
-    def handle_country_text_changed(self, country):
-        self.myLabel.setText(f"Selected: {country}")
+    def handle_country_text_changed(self, country: str) -> None:
+        '''
+        Handle country selection changes in the dropdown.
+        
+        Called whenever the user selects a different country from the
+        dropdown menu. Updates the selection label to show the currently
+        selected country.
+        '''
+        if country and country not in ["Loading countries...", "Error loading countries"]:
+            self.myLabel.setText(f"Selected: {country}")
