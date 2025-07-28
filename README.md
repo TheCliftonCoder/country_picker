@@ -30,7 +30,7 @@ conda activate country_picker
 
 **Install dependencies:**
 
-conda install pyside6 requests
+conda install pyside6 requests pytest
 
 
 Alternatively a requirements .txt is provided for installation through pip.
